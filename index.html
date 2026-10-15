@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SaladDev</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:#f5f5f7;
+  font:14px Arial,sans-serif;
+  background:radial-gradient(ellipse at top,#28272c,#101012 60%,#060607);
+  display:flex;justify-content:center;align-items:center;padding:24px
+}
+main{width:min(760px,100%)}
+header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.logo{font-size:25px;font-weight:900;letter-spacing:-2px}
+.name{font-weight:bold}
+button,a{color:inherit;cursor:pointer}
+button{border:1px solid #ffffff18;border-radius:12px;padding:10px 15px;background:#303034}
+button:hover{background:#45454b}
+.player{margin-left:auto;display:flex;align-items:center;gap:8px}
+input{width:70px;accent-color:white}
+.panel,.stat{
+  background:linear-gradient(145deg,#29292eeb,#17171bee);
+  border:1px solid #ffffff20;border-radius:18px;
+  padding:17px;box-shadow:0 20px 60px #0005
+}
+.card{padding:15px;margin-bottom:12px;border-radius:14px;
+  background:#ffffff06;border:1px solid #ffffff0d}
+.card:last-child{margin-bottom:0}
+h3{font-size:14px;margin:0 0 5px}
+p{color:#85858e;margin:0 0 12px}
+.code{display:flex;align-items:center;gap:8px}
+code{flex:1;overflow:auto;white-space:nowrap;padding:12px;
+  border-radius:10px;background:#303034;color:#c3c3cb;font-size:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.metrics span{display:block;color:#85858e;font-size:12px;margin-bottom:7px}
+.metrics strong{font-size:18px}
+.socials{display:flex;justify-content:center;gap:12px;margin-top:17px}
+.socials a{text-decoration:none;border:1px solid #ffffff20;
+  border-radius:50%;padding:13px;background:#29292e}
+footer{text-align:center;color:#68686e;font-size:11px;margin-top:24px}
+@media(max-width:520px){
+  header{flex-wrap:wrap}.player{margin-left:auto}
+  .stats{grid-template-columns:1fr}.panel{padding:10px}
+  .metrics span{font-size:11px}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="logo">SALAD</div>
+  <div class="name">SaladDev</div>
+  <div class="player">
+    <button id="toggle">▶</button>
+    <input id="volume" type="range" min="0" max="1"
+           step=".01" value=".35" aria-label="Music volume">
+  </div>
+</header>
+
+<section class="panel">
+  <article class="card">
+    <h3>Salad Visuals</h3>
+    <p>Universal · Customize your project description</p>
+    <div class="code">
+      <code>https://example.com/your-project</code>
+      <button class="copy">Copy</button>
+    </div>
+  </article>
+  <article class="card">
+    <h3>My Projects</h3>
+    <p>My latest project</p>
+    <div class="code">
+      <code>https://example.com/my-project</code>
+      <button class="copy">Copy</button>
+    </div>
+  </article>
+</section>
+
+<section class="stats">
+  <article class="stat">
+    <h3>Visuals</h3><br>
+    <div class="metrics">
+      <div><span>Runs</span><strong>83</strong></div>
+      <div><span>Online</span><strong>0</strong></div>
+      <div><span>Unique users</span><strong>43</strong></div>
+    </div>
+  </article>
+  <article class="stat">
+    <h3>Projects</h3><br>
+    <div class="metrics">
+      <div><span>Runs</span><strong>86</strong></div>
+      <div><span>Online</span><strong>0</strong></div>
+      <div><span>Unique users</span><strong>26</strong></div>
+    </div>
+  </article>
+</section>
+
+<nav class="socials">
+  <a href="#" aria-label="Telegram">➤</a>
+  <a href="#" aria-label="TikTok">♪</a>
+  <a href="#" aria-label="Discord">◉</a>
+</nav>
+<footer>YOUR BRAND · YOUR WEBSITE</footer>
+<audio id="music" src="background-music.mp3" loop></audio>
+</main>
+
+<script>
+const music=document.getElementById('music');
+const toggle=document.getElementById('toggle');
+music.volume=.35;
+
+toggle.onclick=async()=>{
+  if(music.paused){
+    try{await music.play();toggle.textContent='Ⅱ'}
+    catch(e){alert('Check that background-music.mp3 is in this folder.')}
+  }else{
+    music.pause();toggle.textContent='▶';
+  }
+};
+document.getElementById('volume').oninput=e=>{
+  music.volume=Number(e.target.value);
+  music.muted=false;
+};
+document.querySelectorAll('.copy').forEach(button=>{
+  button.onclick=async()=>{
+    const text=button.parentElement.querySelector('code').textContent;
+    try{
+      await navigator.clipboard.writeText(text);
+      button.textContent='Copied!';
+    }catch(e){button.textContent='Copy unavailable'}
+    setTimeout(()=>button.textContent='Copy',1200);
+  };
+});
+</script>
+</body>
+</html>
